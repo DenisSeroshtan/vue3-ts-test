@@ -28,4 +28,20 @@ describe('Timeline', () => {
         expect($month.classes()).toContain('is-active')
         expect($week.classes()).not.toContain('is-active')
     })
+
+    it('renders today post by default', async () => {
+        const wrapper = mount(Timeline)
+
+        expect(wrapper.findAll('[data-test="post"]')).toHaveLength(1)
+
+        const $week = wrapper.findAll('[data-test="period"]')[1]
+        await $week.trigger('click')
+
+        expect(wrapper.findAll('[data-test="post"]')).toHaveLength(2)
+
+        const $month = wrapper.findAll('[data-test="period"]')[2]
+        await $month.trigger('click')
+
+        expect(wrapper.findAll('[data-test="post"]')).toHaveLength(3)
+    })
 })
