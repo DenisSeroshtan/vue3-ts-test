@@ -24,12 +24,16 @@ import {todayPost, thisWeek, thisMonth} from './mocks'
 import TimelinePost from "./TimelinePost.vue";
 import moment from 'moment'
 
+// emulate
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
 export default defineComponent({
   components: {
     TimelinePost,
   },
-  setup() {
+  async setup() {
+    await delay(2000)
     const periods: Period[] = ['сегодня', 'на этой неделе', 'в этот месяц']
     const selectedPeriod = ref<Period>('сегодня')
     const setPeriod = (period: Period) => selectedPeriod.value = period
