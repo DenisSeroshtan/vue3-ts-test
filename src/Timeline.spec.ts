@@ -1,18 +1,43 @@
 import {mount} from '@vue/test-utils'
-import Timeline from "./Timeline.vue"
+import Home from "./Home.vue"
+import flushPromises from "flush-promises";
+import * as dataMock from './mocks'
+
+jest.mock('axios', () => ({
+    get: (url: string) => ({
+        data: [dataMock.todayPost, dataMock.thisWeek, dataMock.thisMonth]
+    })
+}))
 
 describe('Timeline', () => {
+    let wrapper;
+
+    const createComponent = () => {
+        wrapper = mount(Home)
+    }
+
+    afterEach(() => {
+        wrapper = null
+    })
 
     it('render 3 timeline', () => {
-        const wrapper = mount(Timeline)
+        createComponent()
+        const progress = wrapper.find('[data-test="progress"]')
+
+        expect(progress.exists()).toBe(true)
+    })
+
+    it('render 3 timeline', async () => {
+        createComponent()
+        await flushPromises()
         const links = wrapper.findAll('[data-test="period"]')
 
         expect(links).toHaveLength(3)
     })
 
     it('updated period when click', async () => {
-        const wrapper = mount(Timeline)
-
+        createComponent()
+        await flushPromises()
         const $today = wrapper.findAll('[data-test="period"]')[0]
         expect($today.classes()).toContain('is-active')
 
@@ -30,7 +55,8 @@ describe('Timeline', () => {
     })
 
     it('renders today post by default', async () => {
-        const wrapper = mount(Timeline)
+        createComponent()
+        await flushPromises()
 
         expect(wrapper.findAll('[data-test="post"]')).toHaveLength(1)
 
