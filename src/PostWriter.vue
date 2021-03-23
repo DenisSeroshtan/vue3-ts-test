@@ -16,15 +16,18 @@
         <div contenteditable ref="contenteditable" @input="handleEdit"></div>
       </div>
       <div class="column is-one-half">
-        {{ markdown }}
+        <div v-html="html"></div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, ref, onMounted} from 'vue'
+import {defineComponent, ref, onMounted, watch} from 'vue'
 import {Post} from "./types";
+import {parse, MarkedOptions} from 'marked'
+import {highlightAuto} from "highlight.js";
+import debounce from 'lodash/debounce'
 
 export default defineComponent({
   name: 'PostWriter',
@@ -38,7 +41,13 @@ export default defineComponent({
     const title = ref(props.post.title)
     const contenteditable = ref<null | HTMLDivElement>(null)
     const markdown = ref(props.post.markdown)
+    const html = ref('')
 
+    const options: MarkedOptions = {
+      highlight: (code: string) => {
+        highlightAuto(code).value
+      }
+    }
     const handleEdit = () => (
         markdown.value = contenteditable.value.innerText
     )
@@ -47,11 +56,17 @@ export default defineComponent({
       contenteditable.value.innerText = markdown.value
     })
 
+    const update = (value: string): void => {
+      html.value = parse(value, options)
+    }
+    watch(markdown, debounce(update, 500), {immediate: true})
+
     return {
       title,
       contenteditable,
-      handleEdit,
       markdown,
+      html,
+      handleEdit,
     }
   },
 })
