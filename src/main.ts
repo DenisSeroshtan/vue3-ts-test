@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import {router} from "./router";
 import axios from "axios";
 import * as dataMock from './mocks'
+import random from 'lodash/random'
 
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
 
@@ -14,6 +15,17 @@ axios.get = async (url: string) => {
             data: [
                 dataMock.todayPost, dataMock.thisWeek, dataMock.thisMonth
             ]
+        })
+    }
+}
+//@ts-ignore
+axios.post = async (url: string, payload: Post) => {
+    if (url === '/posts') {
+        await delay(1000)
+        const id = random(10, 10000)
+
+        return Promise.resolve({
+            data: {...payload, id}
         })
     }
 }
