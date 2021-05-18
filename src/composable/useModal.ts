@@ -1,4 +1,4 @@
-import {ref} from 'vue'
+import {ref, readonly} from 'vue'
 
 const visible = ref<Boolean>(false)
 export const useModal = () => {
@@ -6,7 +6,7 @@ export const useModal = () => {
     const hide = (): boolean => visible.value = false
 
     return {
-        visible,
+        visible: readonly(visible),
         show,
         hide,
     }
