@@ -4,7 +4,7 @@
     <div class="control">
       <input :type="type" :id="name" class="input" @input="handleInput" :value="modelValue">
     </div>
-    <p v-if="error" class="is-danger">{{ error }}</p>
+    <p v-if="error" class="has-text-danger">{{ error }}</p>
   </div>
 </template>
 

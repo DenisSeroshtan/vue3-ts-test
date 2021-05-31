@@ -1,5 +1,5 @@
 import {reactive, readonly} from 'vue'
-import {Post} from "./types";
+import {Post, User} from "./types";
 import axios from 'axios'
 
 interface PostsState {
@@ -62,7 +62,9 @@ class Store {
 
         this.state.posts.loaded = true
     }
+    createUser(user: User) {
 
+    }
 }
 
 const store = new Store(initialState())

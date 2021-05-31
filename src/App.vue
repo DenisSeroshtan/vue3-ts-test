@@ -7,8 +7,7 @@
     <button class="modal-close is-large" aria-label="close" @click="modal.hide()"></button>
   </div>
   <section class="section">
-    <FormInput v-model="valueUserName" name="username" label="username"></FormInput>
-    {{ valueUserName }}
+    <FormInput v-model="valueUserName" name="username" :error="validateUserName.message" label="username"></FormInput>
     <div class="container">
       <NavBar/>
       <router-view/>
@@ -21,6 +20,7 @@ import {defineComponent, computed, ref} from 'vue'
 import NavBar from './NavBar.vue'
 import FormInput from './FormInput.vue'
 import {useModal} from './composable/useModal'
+import {validate, length, required, Status} from './validators'
 export default defineComponent({
   components: {
     NavBar,
@@ -32,10 +32,12 @@ export default defineComponent({
     const valueUserName = ref('')
     const styleVisibleModal =
         computed(() => ({display: modal.visible.value ? 'block' : 'none'}))
+    const validateUserName= computed<Status> (() => validate(valueUserName.value, [required(), length({min: 5, max: 15})]))
     return {
       modal,
       styleVisibleModal,
       valueUserName,
+      validateUserName,
     }
   }
 })

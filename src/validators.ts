@@ -31,7 +31,7 @@ export function length(options: MinMaxOptions): Length {
 
 type Validator = Require | Length
 
-interface Status {
+export interface Status {
     valid: boolean
     message?: string
 }
@@ -44,10 +44,10 @@ export function validate(value: string, validators: Validator[]): Status {
                 message: 'Обязательное поле'
             }
         }
-        if (validator.type === 'length' && (value.length > validator.options.min && value.length < validator.options.max)) {
+        if (validator.type === 'length' && (value.length < validator.options.min || value.length > validator.options.max)) {
             return {
                 valid: false,
-                message: `минимальное количество символов ${validator.options.min} максимальное количество символов${validator.options.min}`
+                message: `минимальное количество символов - ${validator.options.min} максимальное количество символов - ${validator.options.max}`
             }
         }
     }
