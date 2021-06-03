@@ -1,6 +1,7 @@
-import {reactive, readonly} from 'vue'
+import {inject, provide, reactive, readonly} from 'vue'
 import {Post, User} from "./types";
 import axios from 'axios'
+import {thisMonth, thisWeek, todayPost} from "./mocks";
 
 interface PostsState {
     ids: string[],
@@ -11,8 +12,6 @@ interface PostsState {
 interface State {
     posts: PostsState
 }
-
-import {todayPost, thisMonth, thisWeek } from "./mocks";
 
 const initialPostState = (): PostsState => ({
     ids: [
@@ -70,4 +69,8 @@ class Store {
 const store = new Store(initialState())
 store.getState()
 
-export const useStore = () => store
+export const provideStore = ():void => provide('store', store)
+
+export const createStore = ():Store => new Store(initialState())
+
+export const useStore = ():Store => inject<Store>('store')

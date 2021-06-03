@@ -2,6 +2,7 @@ import {mount} from '@vue/test-utils'
 import Home from "./Home.vue"
 import flushPromises from "flush-promises";
 import * as dataMock from './mocks'
+import {createStore} from "./store";
 
 jest.mock('axios', () => ({
     get: (url: string) => ({
@@ -13,7 +14,13 @@ describe('Timeline', () => {
     let wrapper;
 
     const createComponent = () => {
-        wrapper = mount(Home)
+        wrapper = mount(Home, {
+            global: {
+                provide: {
+                    store: createStore()
+                }
+            }
+        })
     }
 
     afterEach(() => {

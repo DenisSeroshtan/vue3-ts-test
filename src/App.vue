@@ -21,6 +21,7 @@ import NavBar from './NavBar.vue'
 import FormInput from './FormInput.vue'
 import {useModal} from './composable/useModal'
 import {validate, length, required, Status} from './validators'
+import {provideStore} from './store'
 export default defineComponent({
   components: {
     NavBar,
@@ -28,6 +29,7 @@ export default defineComponent({
   },
   name: 'App',
   setup() {
+    provideStore()
     const modal = useModal()
     const valueUserName = ref('')
     const styleVisibleModal =
