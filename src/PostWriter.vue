@@ -38,6 +38,7 @@ export default defineComponent({
       required: true,
     }
   },
+  emits: ['save'],
   setup(props, {emit}) {
     const title = ref(props.post.title)
     const contenteditable = ref<null | HTMLDivElement>(null)
