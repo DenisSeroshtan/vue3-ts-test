@@ -28,7 +28,16 @@ axios.post = async (url: string, payload: Post) => {
             data: {...payload, id}
         })
     }
+    if (url === '/users') {
+        await delay(1000)
+        const id = random(10, 10000)
+        const {id: oldId, password, ...rest} = payload
+        return Promise.resolve({
+            data: {...rest, id}
+        })
+    }
 }
+
 import App from './App.vue'
 
 const app = createApp(App)

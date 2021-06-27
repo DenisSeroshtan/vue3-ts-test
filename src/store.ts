@@ -1,5 +1,5 @@
 import {inject, provide, reactive, readonly} from 'vue'
-import {Post, User} from "./types";
+import {Post, User, Author} from "./types";
 import axios from 'axios'
 import {thisMonth, thisWeek, todayPost} from "./mocks";
 
@@ -8,23 +8,34 @@ interface PostsState {
     all: Record<string, Post>,
     loaded: boolean,
 }
+interface AuthorsState {
+    ids: string[],
+    all: Record<string, Author>,
+    loaded: boolean,
+    currentUserId?: string
+}
 
 interface State {
+    authors: AuthorsState,
     posts: PostsState
 }
 
 const initialPostState = (): PostsState => ({
-    ids: [
-
-    ],
-    all: {
-
-    },
+    ids: [],
+    all: {},
     loaded: false,
 })
 
+const initialAuthorsState = (): AuthorsState => ({
+    ids: [],
+    all: {},
+    loaded: false,
+    currentUserId: undefined
+})
+
 const initialState = (): State => ({
-    posts: initialPostState()
+    posts: initialPostState(),
+    authors: initialAuthorsState()
 })
 
 class Store {
@@ -58,7 +69,10 @@ class Store {
         this.state.posts.loaded = true
     }
     createUser(user: User) {
-
+        const {data} = await axios.post<Author>('/users', user)
+        this.state.authors.all[data.id] = data
+        this.state.authors.ids.push(data.id.toString())
+        this.state.authors.currentUserId = data.id.toString()
     }
 }
 

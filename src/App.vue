@@ -7,7 +7,6 @@
     <button class="modal-close is-large" aria-label="close" @click="modal.hide()"></button>
   </div>
   <section class="section">
-    <FormInput v-model="valueUserName" name="username" :error="validateUserName.message" label="username"></FormInput>
     <div class="container">
       <NavBar/>
       <router-view/>
