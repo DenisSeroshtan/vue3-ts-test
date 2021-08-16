@@ -68,7 +68,8 @@ class Store {
 
         this.state.posts.loaded = true
     }
-    createUser(user: User) {
+
+    async createUser(user: User) {
         const {data} = await axios.post<Author>('/users', user)
         this.state.authors.all[data.id] = data
         this.state.authors.ids.push(data.id.toString())

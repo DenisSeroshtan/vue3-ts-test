@@ -2,6 +2,7 @@
   <form @submit.prevent="submit">
     <FormInput v-model="username" name="username" :error="statusUsername.message" label="username"></FormInput>
     <FormInput v-model="password" type="password" :error="statusPassword.message" label="password"></FormInput>
+    <button class="button is-primary" :disabled="!statusUsername.valid || !statusPassword.valid">Submit</button>
   </form>
 </template>
 
@@ -14,13 +15,14 @@ import {useStore} from "./store";
 import {User} from "./types";
 
 export default defineComponent({
+  name: 'SignUp',
   components: {FormInput},
   setup() {
     const username = ref('')
     const password = ref('')
 
-    const statusUsername = computed<Status>(() => validate(username.value, [required(), length({min:5, max:20})]))
-    const statusPassword = computed<Status>(() => validate(password.value, [required(), length({min:5, max:20})]))
+    const statusUsername = computed<Status>(() => validate(username.value, [required(), length({min: 5, max: 20})]))
+    const statusPassword = computed<Status>(() => validate(password.value, [required(), length({min: 5, max: 20})]))
 
     const store = useStore()
 
@@ -30,10 +32,14 @@ export default defineComponent({
       password: password.value,
     }
 
+    const modal = useModal()
     const submit = (e: any) => {
+      if (!statusUsername.value.valid || !statusPassword.value.valid) {
+        return
+      }
       store.createUser(user)
+      modal.hide()
     }
-    useModal().hide()
     return {
       username,
       password,

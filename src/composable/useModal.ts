@@ -6,6 +6,7 @@ export const useModal = () => {
     const hide = (): boolean => visible.value = false
 
     return {
+        component: null,
         visible: readonly(visible),
         show,
         hide,
