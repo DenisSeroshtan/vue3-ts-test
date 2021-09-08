@@ -1,22 +1,18 @@
 <template>
-  <router-link data-test="can-edit" v-if="canEdit" :to="to" class="button is-rounded is-link">
-    <i class="fas fa-edit"></i>
-  </router-link>
-  <div>
-    {{ post.title }}
-  </div>
+  <div>Post Editor</div>
 </template>
 
 <script lang="ts">
 import {defineComponent} from 'vue'
-import {useStore} from './store';
-import {useRoute} from 'vue-router';
+
+import {useStore} from "./store";
+import {useRoute, useRouter} from "vue-router";
 
 export default defineComponent({
-
   async setup() {
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
 
     const id = route.params.id as string
 
@@ -26,10 +22,13 @@ export default defineComponent({
     const post = store.getState().posts.all[id]
     const canEdit = post.authorId === parseInt(store.getState().authors.currentUserId!, 10)
 
+    if (!canEdit) {
+      await router.push('/')
+    }
+
     return {
       post,
-      to: `/posts/${post.id}/edit`,
-      canEdit
+      to: `/posts/${post.id}/edit`
     }
   }
 })

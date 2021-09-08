@@ -33,7 +33,7 @@ const initialAuthorsState = (): AuthorsState => ({
     currentUserId: undefined
 })
 
-const initialState = (): State => ({
+export const initialState = (): State => ({
     posts: initialPostState(),
     authors: initialAuthorsState()
 })
@@ -82,6 +82,8 @@ store.getState()
 
 export const provideStore = ():void => provide('store', store)
 
-export const createStore = ():Store => new Store(initialState())
+export const createStore = (init: State = initialState()): Store => {
+    return new Store(init)
+}
 
 export const useStore = ():Store => inject<Store>('store')
