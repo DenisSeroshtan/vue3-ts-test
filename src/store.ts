@@ -15,7 +15,7 @@ interface AuthorsState {
     currentUserId?: string
 }
 
-interface State {
+export interface State {
     authors: AuthorsState,
     posts: PostsState
 }
@@ -38,7 +38,7 @@ export const initialState = (): State => ({
     authors: initialAuthorsState()
 })
 
-class Store {
+export class Store {
     protected state: State
 
     constructor(initialState: State) {
@@ -54,6 +54,11 @@ class Store {
         const {data} = await axios.post<Post>('/posts', post)
         this.state.posts.all[data.id] = data
         this.state.posts.ids.push(data.id.toString())
+    }
+
+    async updatePost(post: Post) {
+        const {data} = await axios.put<Post>('/posts', post)
+        this.state.posts.all[data.id] = data
     }
 
     async fetchPosts() {

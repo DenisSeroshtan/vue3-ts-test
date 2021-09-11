@@ -1,10 +1,11 @@
 <template>
-  <router-link data-test="can-edit" v-if="canEdit" :to="to" class="button is-rounded is-link">
+  <router-link data-test="can-edit" v-if="canEdit" :to="to" class="button is-rounded is-link is-pulled-right">
     <i class="fas fa-edit"></i>
   </router-link>
-  <div>
+  <h1>
     {{ post.title }}
-  </div>
+  </h1>
+  <div v-html="post.html"></div>
 </template>
 
 <script lang="ts">

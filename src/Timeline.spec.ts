@@ -18,8 +18,13 @@ describe('Timeline', () => {
             global: {
                 provide: {
                     store: createStore()
+                },
+                components: {
+                    RouterLink: {
+                        template: '<div/>'
+                    }
                 }
-            }
+            },
         })
     }
 
